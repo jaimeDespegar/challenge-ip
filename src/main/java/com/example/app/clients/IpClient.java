@@ -1,23 +1,24 @@
 package com.example.app.clients;
 
 import com.example.app.clients.responses.IpInformationResponse;
+import com.example.app.exceptions.ClientException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.cache.annotation.Cacheable;
 
 @Component
-public class IpClient {
+public class IpClient extends TemplateClient {
 
     @Value("${ip.client.url}")
     private String url;
-    private RestTemplate restTemplate = new RestTemplate();
 
+    @Cacheable("ipInformation")
     public IpInformationResponse getIpInfo(String ip) {
         try {
-            String urlWithIp = String.format(url, ip);
-            return restTemplate.getForEntity(urlWithIp, IpInformationResponse.class).getBody();
+            LOGGER.info("GET Ip Service with ip {}", ip);
+            return this.get(url, ip, IpInformationResponse.class);
         } catch (Exception e) {
-            throw new RuntimeException("Error Client Ip", e);
+            throw new ClientException("Error Client Ip", e);
         }
     }
 

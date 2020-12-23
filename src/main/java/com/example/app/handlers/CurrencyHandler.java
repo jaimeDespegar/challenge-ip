@@ -25,7 +25,6 @@ public class CurrencyHandler extends BasicHandler {
     public void handle(Context context) {
         CurrencyResponse response = this.client.getCurrencyInfo(context.getCurrency());
         context.setCurrenciesToEuroValue(response.getRates());
-        //super.handle(context);
     }
 
 }

@@ -1,23 +1,24 @@
 package com.example.app.clients;
 
 import com.example.app.clients.responses.CountryInfoResponse;
+import com.example.app.exceptions.ClientException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 @Component
-public class CountryInfoClient {
+public class CountryInfoClient extends TemplateClient {
 
     @Value("${country.info.client.url}")
     private String url;
-    private RestTemplate restTemplate = new RestTemplate();
 
+    @Cacheable("countryInformation")
     public CountryInfoResponse getCountryInfo(String countryIsoCode) {
         try {
-            String urlWithParam = String.format(url, countryIsoCode);
-            return restTemplate.getForEntity(urlWithParam, CountryInfoResponse.class).getBody();
+            LOGGER.info("GET Country Service with isoCode {}", countryIsoCode);
+            return this.get(url, countryIsoCode, CountryInfoResponse.class);
         } catch (Exception e) {
-            throw new RuntimeException("Error Client Country Info", e);
+            throw new ClientException("Error Client Country Info", e);
         }
     }
 

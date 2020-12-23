@@ -1,13 +1,16 @@
 package com.example.app.models;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 public class CountryInformation {
 
     private String name;
     private String isoCode;
     private String currency;
-    private String quotation;
+    private Map<String, BigDecimal> quotation;
 
-    public CountryInformation(String name, String isoCode, String currency, String quotation) {
+    public CountryInformation(String name, String isoCode, String currency, Map<String, BigDecimal> quotation) {
         this.name = name;
         this.isoCode = isoCode;
         this.currency = currency;
@@ -38,11 +41,11 @@ public class CountryInformation {
         this.currency = currency;
     }
 
-    public String getQuotation() {
+    public Map<String, BigDecimal> getQuotation() {
         return quotation;
     }
 
-    public void setQuotation(String quotation) {
+    public void setQuotation(Map<String, BigDecimal> quotation) {
         this.quotation = quotation;
     }
 
