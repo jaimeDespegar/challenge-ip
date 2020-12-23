@@ -46,4 +46,14 @@ public class CountryInformation {
         this.quotation = quotation;
     }
 
+    @Override
+    public String toString() {
+        return "CountryInformation{" +
+                "name='" + name + '\'' +
+                ", isoCode='" + isoCode + '\'' +
+                ", currency='" + currency + '\'' +
+                ", quotation='" + quotation + '\'' +
+                '}';
+    }
+
 }

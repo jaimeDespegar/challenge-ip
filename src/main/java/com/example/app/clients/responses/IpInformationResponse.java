@@ -2,9 +2,9 @@ package com.example.app.clients.responses;
 
 public class IpInformationResponse {
 
-    public String countryCode;
-    public String countryCode3;
-    public String countryName;
+    private String countryCode;
+    private String countryCode3;
+    private String countryName;
 
     public String getCountryCode() {
         return countryCode;

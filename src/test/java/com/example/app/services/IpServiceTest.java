@@ -15,7 +15,7 @@ public class IpServiceTest {
 
     @BeforeClass
     public void setUp() {
-        this.service = new IpService();
+        this.service = null;//new IpService();
         this.invalidIps = Lists.newArrayList("", null,
                                              "12.146.162.205.85",
                                              ".127.146.176.185.",
