@@ -1,18 +1,17 @@
 
 package com.example.app.controllers;
 
-import com.example.app.models.CountryInformation;
-import com.example.app.services.IpService;
+import com.example.app.models.IpInformation;
+import com.example.app.services.BlackListIpService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Controller {
 
 	@Autowired
-	private IpService service;
+	private BlackListIpService service;
+	//private SimpleIpIpService service;
 
 	@RequestMapping("/")
 	public String index() {
@@ -20,8 +19,18 @@ public class Controller {
 	}
 
 	@RequestMapping("/{ip}")
-	public CountryInformation getInformationByIp(@PathVariable String ip) {
-		return this.service.getInfoUser(ip);
+	public IpInformation getInformationByIp(@PathVariable String ip) {
+		return this.service.getInformationUser(ip);
+	}
+
+	@PostMapping("/blackList/{ip}")
+	public boolean addIpInBlackList(@PathVariable String ip) {
+		return this.service.addIp(ip);
+	}
+
+	@DeleteMapping("/blackList/{ip}")
+	public boolean deleteIpInBlackList(@PathVariable String ip) {
+		return this.service.removeIp(ip);
 	}
 
 }
