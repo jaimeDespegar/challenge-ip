@@ -5,8 +5,10 @@ import com.example.app.exceptions.IpNotAllowedToConsultException;
 import com.example.app.models.IpInformation;
 import com.example.app.models.IpItem;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class BlackListIpService implements IpService {
 
     private final IpService delegate;
@@ -32,7 +34,8 @@ public class BlackListIpService implements IpService {
     }
 
     public boolean removeIp(String ip) {
-        return this.repository.removeByIp(ip);
+        this.repository.removeByIp(ip);
+        return true;
     }
 
     private boolean isInBlackList(String ip) {
