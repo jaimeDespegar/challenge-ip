@@ -11,7 +11,6 @@ public class Controller {
 
 	@Autowired
 	private BlackListIpService service;
-	//private SimpleIpIpService service;
 
 	@RequestMapping("/")
 	public String index() {

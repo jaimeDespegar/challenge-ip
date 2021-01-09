@@ -1,6 +1,9 @@
 package com.example.app.handlers;
 
-public abstract class BasicHandler implements Handler {
+import com.example.app.exceptions.HandlerException;
+import com.example.app.models.IpInformation.IpInformationBuilder;
+
+public abstract class BasicHandler<P> implements Handler<P> {
 
     private Handler next;
 
@@ -10,15 +13,25 @@ public abstract class BasicHandler implements Handler {
         this.next = next;
     }
 
+    @Override
     public void setNext(Handler handler) {
         this.next = handler;
     }
 
     @Override
-    public void handle(Context context) {
+    public IpInformationBuilder handle(IpInformationBuilder builder, P param) {
         if (this.next != null) {
-            this.next.handle(context);
+            return this.next.doHandle(builder, param);
         }
+        return builder;
+    }
+
+    @Override
+    public IpInformationBuilder doHandle(IpInformationBuilder builder, P param) {
+        if (this.canHandle(param)) {
+            return this.handle(builder, param);
+        }
+        throw new HandlerException(getClass().getSimpleName() + " can't handle with parameter " + param.toString());
     }
 
 }

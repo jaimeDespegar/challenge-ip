@@ -1,14 +1,14 @@
 package com.example.app.handlers;
 
 import com.example.app.clients.CountryInfoClient;
-import com.example.app.clients.responses.CountryInfoResponse;
+import com.example.app.models.IpInformation.IpInformationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import java.util.stream.Collectors;
 
 @Component
-public class CountryHandler extends BasicHandler {
+public class CountryHandler extends BasicHandler<String> {
 
     private final CountryInfoClient client;
     private static final Integer LENGTH_ALLOW_COUNTRY_ISO_CODE = 3;
@@ -19,19 +19,20 @@ public class CountryHandler extends BasicHandler {
     }
 
     @Override
-    public boolean canHandle(Context context) {
-        String isoCode = context.getCountryIsoCode();
+    public boolean canHandle(String isoCode) {
         return !StringUtils.isEmpty(isoCode) && isoCode.length() == LENGTH_ALLOW_COUNTRY_ISO_CODE;
     }
 
     @Override
-    public void handle(Context context) {
-        CountryInfoResponse response = this.client.getCountryInfo(context.getCountryIsoCode());
-        String codes = response.getCurrencies().stream()
-                                               .map(i -> i.getCode())
-                                               .collect(Collectors.joining(","));
-        context.setCurrency(codes);
-        super.handle(context);
+    public IpInformationBuilder handle(IpInformationBuilder builder, String isoCode) {
+
+        String codes = this.client.getCountryInfo(isoCode)
+                                  .getCurrencies().stream()
+                                  .map(i -> i.getCode())
+                                  .collect(Collectors.joining(","));
+        builder.currency(codes);
+        super.handle(builder, codes);
+        return builder;
     }
 
 }

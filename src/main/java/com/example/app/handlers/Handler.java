@@ -1,8 +1,12 @@
 package com.example.app.handlers;
 
-public interface Handler {
+import com.example.app.models.IpInformation.*;
 
-    boolean canHandle(Context context);
-    void handle(Context context);
+public interface Handler<P> {
+
+    boolean canHandle(P context);
+    IpInformationBuilder handle(IpInformationBuilder builder, P param);
+    IpInformationBuilder doHandle(IpInformationBuilder builder, P param);
+    void setNext(Handler handler);
 
 }

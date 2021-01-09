@@ -2,16 +2,15 @@ package com.example.app.handlers;
 
 import com.example.app.clients.IpClient;
 import com.example.app.clients.responses.IpInformationResponse;
+import com.example.app.helpers.IpHelper;
+import com.example.app.models.IpInformation.IpInformationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 @Component
-public class IpHandler extends BasicHandler {
+public class IpHandler extends BasicHandler<String> {
 
     private final IpClient client;
-    private static final String zeroTo255 = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
-    private static final String FORMAT_IP = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255;
 
     @Autowired
     public IpHandler(IpClient client) {
@@ -19,16 +18,16 @@ public class IpHandler extends BasicHandler {
     }
 
     @Override
-    public boolean canHandle(Context context) {
-        return !StringUtils.isEmpty(context.getIp()) && context.getIp().matches(FORMAT_IP);
+    public boolean canHandle(String ip) {
+        return IpHelper.isValid(ip);
     }
 
     @Override
-    public void handle(Context context) {
-        IpInformationResponse response = this.client.getIpInfo(context.getIp());
-        context.setCountryIsoCode(response.getCountryCode3());
-        context.setCountry(response.getCountryName());
-        super.handle(context);
+    public IpInformationBuilder handle(IpInformationBuilder builder, String ip) {
+        IpInformationResponse response = this.client.getIpInfo(ip);
+        builder.countryName(response.getCountryName());
+        builder.countryIsoCode(response.getCountryCode3());
+        return super.handle(builder, response.getCountryCode3());
     }
 
 }

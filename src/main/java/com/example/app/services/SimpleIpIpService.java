@@ -1,6 +1,5 @@
 package com.example.app.services;
 
-import com.example.app.adapters.IpInformationAdapter;
 import com.example.app.handlers.*;
 import com.example.app.models.IpInformation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,33 +8,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class SimpleIpIpService implements IpService {
 
-    private final IpHandler ipHandler;
-    private final CountryHandler countryHandler;
-    private final CurrencyHandler currencyHandler;
-    private final IpInformationAdapter adapter;
+    private final Handler ipHandler, countryHandler, currencyHandler;
 
     @Autowired
     public SimpleIpIpService(IpHandler ipHandler,
                              CountryHandler countryHandler,
-                             CurrencyHandler currencyHandler,
-                             IpInformationAdapter adapter) {
+                             CurrencyHandler currencyHandler) {
         this.ipHandler = ipHandler;
         this.countryHandler = countryHandler;
         this.currencyHandler = currencyHandler;
-        this.adapter = adapter;
+
+        this.ipHandler.setNext(this.countryHandler);
+        this.countryHandler.setNext(this.currencyHandler);
     }
 
     @Override
     public IpInformation getInformationUser(String ip) {
-        Context context = new Context();
-        context.setIp(ip);
-
-        this.ipHandler.setNext(this.countryHandler);
-        this.countryHandler.setNext(this.currencyHandler);
-        this.ipHandler.handle(context);
-
-        return this.adapter.adapt(context);
+        return this.ipHandler.doHandle(IpInformation.builder(), ip)
+                             .build();
     }
 
 }
-

@@ -2,12 +2,13 @@ package com.example.app.handlers;
 
 import com.example.app.clients.CurrencyClient;
 import com.example.app.clients.responses.CurrencyResponse;
+import com.example.app.models.IpInformation.IpInformationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
-public class CurrencyHandler extends BasicHandler {
+public class CurrencyHandler extends BasicHandler<String> {
 
     private final CurrencyClient client;
 
@@ -17,14 +18,15 @@ public class CurrencyHandler extends BasicHandler {
     }
 
     @Override
-    public boolean canHandle(Context context) {
-        return !StringUtils.isEmpty(context.getCurrency());
+    public boolean canHandle(String currencies) {
+        return !StringUtils.isEmpty(currencies);
     }
 
     @Override
-    public void handle(Context context) {
-        CurrencyResponse response = this.client.getCurrencyInfo(context.getCurrency());
-        context.setCurrenciesToEuroValue(response.getRates());
+    public IpInformationBuilder handle(IpInformationBuilder builder, String currencies) {
+        CurrencyResponse response = this.client.getCurrencyInfo(currencies);
+        builder.quotation(response.getRates());
+        return builder;
     }
 
 }

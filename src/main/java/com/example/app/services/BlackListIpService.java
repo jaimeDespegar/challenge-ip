@@ -29,7 +29,7 @@ public class BlackListIpService implements IpService {
     }
 
     public boolean addIp(String ip) {
-        this.repository.save(new IpItem(ip));
+        this.repository.save(IpItem.builder().ip(ip).build());
         return true;
     }
 
