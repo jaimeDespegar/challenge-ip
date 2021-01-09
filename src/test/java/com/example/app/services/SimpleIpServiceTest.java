@@ -1,5 +1,6 @@
 package com.example.app.services;
 
+import com.example.app.exceptions.HandlerException;
 import com.example.app.exceptions.InvalidFormatIpException;
 import com.example.app.handlers.*;
 import com.example.app.models.IpInformation;
@@ -14,8 +15,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doCallRealMethod;
 
-public class SimpleIpIpServiceTest {
+public class SimpleIpServiceTest {
 
     private IpService ipService;
     private List<String> invalidIps;
@@ -39,7 +41,7 @@ public class SimpleIpIpServiceTest {
                 "127.146.176.185.",
                 "127.69.jsq.185",
                 "555.111.222.666",
-                "193.1.106.50",
+                "193.1.106.1150",
                 "Im.not.IP.address");
     }
 
@@ -49,8 +51,8 @@ public class SimpleIpIpServiceTest {
             try {
                 this.ipService.getInformationUser(ip);
                 Assert.fail("Ip " + ip + " should not be valid.");
-            } catch (InvalidFormatIpException ife) {
-                Assert.assertEquals(ife.getMessage(), "Ip Handler can't handle with param " + ip);
+            } catch (HandlerException he) {
+                Assert.assertEquals(he.getMessage(), this.ipHandler.getClass().getSimpleName()+" can't handle with parameter " + ip);
             }
         }
     }
@@ -68,7 +70,7 @@ public class SimpleIpIpServiceTest {
     private void initMocks() {
         MockitoAnnotations.initMocks(this);
         doCallRealMethod().when(this.ipHandler).setNext(any(Handler.class));
-        doReturn(true).when(this.ipHandler).canHandle(any());
+        doCallRealMethod().when(this.ipHandler).canHandle(any());
         doCallRealMethod().when(this.ipHandler).doHandle(any(), any());
         doCallRealMethod().when(this.countryHandler).setNext(any(Handler.class));
 

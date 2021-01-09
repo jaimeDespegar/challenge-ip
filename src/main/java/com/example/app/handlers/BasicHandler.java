@@ -31,7 +31,7 @@ public abstract class BasicHandler<P> implements Handler<P> {
         if (this.canHandle(param)) {
             return this.handle(builder, param);
         }
-        throw new HandlerException(getClass().getSimpleName() + " can't handle with parameter " + param.toString());
+        throw new HandlerException(getClass().getSimpleName() + " can't handle with parameter " + param);
     }
 
 }

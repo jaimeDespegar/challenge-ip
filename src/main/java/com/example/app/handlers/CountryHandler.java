@@ -31,8 +31,7 @@ public class CountryHandler extends BasicHandler<String> {
                                   .map(i -> i.getCode())
                                   .collect(Collectors.joining(","));
         builder.currency(codes);
-        super.handle(builder, codes);
-        return builder;
+        return super.handle(builder, codes);
     }
 
 }

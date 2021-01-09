@@ -12,7 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.math.BigDecimal;
 
-public class BlackListServiceTest {
+public class BlackListIpServiceTest {
 
     private BlackListIpService instance;
 

@@ -5,14 +5,16 @@ import com.example.app.clients.responses.CountryInfoResponse;
 import com.example.app.exceptions.HandlerException;
 import com.example.app.models.IpInformation;
 import com.google.common.collect.Lists;
+import org.assertj.core.util.Maps;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public class CountryHandlerTest {
 
@@ -28,9 +30,13 @@ public class CountryHandlerTest {
     public void setUp() {
         List<CountryInfoResponse.Currency> currencies = Lists.newArrayList(CountryInfoResponse.Currency.builder().code("ARS").build());
         CountryInfoResponse response = CountryInfoResponse.builder().currencies(currencies).build();
+        Map<String, BigDecimal> values = Maps.newHashMap("ARS", BigDecimal.valueOf(50.5));
 
         MockitoAnnotations.initMocks(this);
-        Mockito.when(this.client.getCountryInfo("ARG")).thenReturn(response);
+        when(this.client.getCountryInfo("ARG")).thenReturn(response);
+        when(this.currencyHandler.canHandle(anyString())).thenReturn(true);
+        when(this.currencyHandler.handle(any(), anyString())).thenReturn(IpInformation.builder().currency("ARS").quotation(values));
+        doCallRealMethod().when(this.currencyHandler).doHandle(any(), anyString());
 
         this.handler = new CountryHandler(this.client);
         this.handlerWithNext = new CountryHandler(this.client);
