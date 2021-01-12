@@ -1,7 +1,6 @@
 package com.example.app.services;
 
 import com.example.app.exceptions.HandlerException;
-import com.example.app.exceptions.InvalidFormatIpException;
 import com.example.app.handlers.*;
 import com.example.app.models.IpInformation;
 import org.assertj.core.util.Lists;
@@ -32,7 +31,7 @@ public class SimpleIpServiceTest {
     @BeforeClass
     public void setUp() {
         this.initMocks();
-        this.ipService = new SimpleIpIpService(this.ipHandler, this.countryHandler, this.currencyHandler);
+        this.ipService = new SimpleIpService(this.ipHandler, this.countryHandler, this.currencyHandler);
         this.invalidIps = Lists.newArrayList("",
                 null,
                 "12.146.162.205.85",

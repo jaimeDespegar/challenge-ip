@@ -1,6 +1,6 @@
 package com.example.app.handlers;
 
-import com.example.app.clients.CountryInfoClient;
+import com.example.app.clients.CountryClient;
 import com.example.app.models.IpInformation.IpInformationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 @Component
 public class CountryHandler extends BasicHandler<String> {
 
-    private final CountryInfoClient client;
+    private final CountryClient client;
     private static final Integer LENGTH_ALLOW_COUNTRY_ISO_CODE = 3;
 
     @Autowired
-    public CountryHandler(CountryInfoClient client) {
+    public CountryHandler(CountryClient client) {
         this.client = client;
     }
 

@@ -15,7 +15,7 @@ public class BlackListIpService implements IpService {
     private final IpRepository repository;
     private static final String MESSAGE_IP_IN_BLACKLIST = "Ip %s not allowed to consult information";
 
-    public BlackListIpService(SimpleIpIpService ipService, IpRepository repository) {
+    public BlackListIpService(SimpleIpService ipService, IpRepository repository) {
         this.delegate = ipService;
         this.repository = repository;
     }

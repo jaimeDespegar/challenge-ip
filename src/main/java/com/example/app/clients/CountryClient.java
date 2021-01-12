@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-@Component
-public class CountryInfoClient extends TemplateClient {
+@Component("countryClient")
+public class CountryClient extends TemplateClient {
 
     @Value("${country.info.client.url}")
     private String url;

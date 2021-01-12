@@ -1,6 +1,6 @@
 package com.example.app.handlers;
 
-import com.example.app.clients.CountryInfoClient;
+import com.example.app.clients.CountryClient;
 import com.example.app.clients.responses.CountryInfoResponse;
 import com.example.app.exceptions.HandlerException;
 import com.example.app.models.IpInformation;
@@ -20,7 +20,7 @@ public class CountryHandlerTest {
 
     private CountryHandler handler, handlerWithNext;
     @Mock
-    private CountryInfoClient client;
+    private CountryClient client;
     @Mock
     private CurrencyHandler currencyHandler;
     private static final String COUNTRY_VALID = "ARG";

@@ -17,7 +17,7 @@ public class BlackListIpServiceTest {
     private BlackListIpService instance;
 
     @Mock
-    private SimpleIpIpService ipService;
+    private SimpleIpService ipService;
     @Mock
     private IpRepository repository;
 

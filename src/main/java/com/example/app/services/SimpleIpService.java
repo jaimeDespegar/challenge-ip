@@ -5,15 +5,15 @@ import com.example.app.models.IpInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
-public class SimpleIpIpService implements IpService {
+@Service("simpleIpService")
+public class SimpleIpService implements IpService {
 
     private final Handler ipHandler, countryHandler, currencyHandler;
 
     @Autowired
-    public SimpleIpIpService(IpHandler ipHandler,
-                             CountryHandler countryHandler,
-                             CurrencyHandler currencyHandler) {
+    public SimpleIpService(IpHandler ipHandler,
+                           CountryHandler countryHandler,
+                           CurrencyHandler currencyHandler) {
         this.ipHandler = ipHandler;
         this.countryHandler = countryHandler;
         this.currencyHandler = currencyHandler;
