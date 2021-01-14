@@ -10,6 +10,7 @@ public abstract class TemplateClient {
     private RestTemplate restTemplate = new RestTemplate();
 
     public <T> T get(String url, String param, Class classResponse) {
+        LOGGER.info("GET Service with param {}", param);
         String urlWithParam = String.format(url, param);
         return (T) restTemplate.getForEntity(urlWithParam, classResponse).getBody();
     }

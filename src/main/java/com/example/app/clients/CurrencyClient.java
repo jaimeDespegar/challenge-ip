@@ -15,7 +15,6 @@ public class CurrencyClient extends TemplateClient {
     @Cacheable("currencyInformation")
     public CurrencyResponse getCurrencyInfo(String currency) {
         try {
-            LOGGER.info("GET Currency Service with currency {}", currency);
             return this.get(url, currency, CurrencyResponse.class);
         } catch (Exception e) {
             throw new ClientException("Error Client Currency ", e);

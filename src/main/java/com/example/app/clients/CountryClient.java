@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-@Component("countryClient")
+@Component
 public class CountryClient extends TemplateClient {
 
     @Value("${country.info.client.url}")
@@ -15,7 +15,6 @@ public class CountryClient extends TemplateClient {
     @Cacheable("countryInformation")
     public CountryInfoResponse getCountryInfo(String countryIsoCode) {
         try {
-            LOGGER.info("GET Country Service with isoCode {}", countryIsoCode);
             return this.get(url, countryIsoCode, CountryInfoResponse.class);
         } catch (Exception e) {
             throw new ClientException("Error Client Country Info", e);

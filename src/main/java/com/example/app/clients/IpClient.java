@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.cache.annotation.Cacheable;
 
-@Component(value = "ipClient")
+@Component
 public class IpClient extends TemplateClient {
 
     @Value("${ip.client.url}")
@@ -15,7 +15,6 @@ public class IpClient extends TemplateClient {
     @Cacheable("ipInformation")
     public IpInformationResponse getIpInfo(String ip) {
         try {
-            //LOGGER.info("GET Ip Service with ip {}", ip);
             return this.get(url, ip, IpInformationResponse.class);
         } catch (Exception e) {
             throw new ClientException("Error Client Ip", e);

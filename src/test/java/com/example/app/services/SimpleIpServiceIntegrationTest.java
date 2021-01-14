@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @SpringBootTest
-public class SimpleIpServiceTestIntegration extends AbstractTestNGSpringContextTests {
+public class SimpleIpServiceIntegrationTest extends AbstractTestNGSpringContextTests {
 
     @Mock
     private IpClient ipClient;
@@ -30,14 +30,12 @@ public class SimpleIpServiceTestIntegration extends AbstractTestNGSpringContextT
     private CountryClient countryClient;
     @Mock
     private CurrencyClient currencyClient;
-
     @InjectMocks
     private IpHandler ipHandler;
     @InjectMocks
     private CountryHandler countryHandler;
     @InjectMocks
     private CurrencyHandler currencyHandler;
-
     private SimpleIpService simpleIpService;
 
     private static final String IP_VALID = "193.50.1.103";
@@ -49,7 +47,6 @@ public class SimpleIpServiceTestIntegration extends AbstractTestNGSpringContextT
 
     @BeforeClass
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
         this.setUpMocks();
         this.simpleIpService = new SimpleIpService(this.ipHandler, this.countryHandler, this.currencyHandler);
     }
@@ -57,7 +54,7 @@ public class SimpleIpServiceTestIntegration extends AbstractTestNGSpringContextT
     @Test(expectedExceptions = ClientException.class)
     public void getInformationUser_whenIpClientFail_thenThrowClientException() {
         doCallRealMethod().when(this.ipClient).getIpInfo("1.101.153.103");
-        when(this.ipClient.get(anyString(), eq("1.101.153.103"), any())).thenThrow(RestClientException.class);
+        when(this.ipClient.get(any(), eq("1.101.153.103"), any())).thenThrow(RestClientException.class);
         this.simpleIpService.getInformationUser("1.101.153.103");
     }
 
@@ -65,27 +62,27 @@ public class SimpleIpServiceTestIntegration extends AbstractTestNGSpringContextT
     public void getInformationUser_whenCountryClientFail_thenThrowClientException() {
         doCallRealMethod().when(this.ipClient).getIpInfo("1.101.153.203");
         doCallRealMethod().when(this.countryClient).getCountryInfo("ARG");
-        when(this.ipClient.get(anyString(), eq("1.101.153.203"), any())).thenReturn(IpInformationResponse.builder().countryCode3("ARG").build());
-        when(this.countryClient.get(anyString(), eq("ARG"), any())).thenThrow(RestClientException.class);
+        when(this.ipClient.get(any(), eq("1.101.153.203"), any())).thenReturn(IpInformationResponse.builder().countryCode3("ARG").build());
+        when(this.countryClient.get(any(), eq("ARG"), any())).thenThrow(RestClientException.class);
         this.simpleIpService.getInformationUser("1.101.153.203");
     }
 
-    @Test/*(expectedExceptions = ClientException.class)*/
+    @Test(expectedExceptions = ClientException.class)
     public void getInformationUser_whenCurrencyClientFail_thenThrowClientException() {
         CountryInfoResponse.Currency currency = CountryInfoResponse.Currency.builder().code("ARS").build();
         List<CountryInfoResponse.Currency> currencies = Lists.newArrayList(currency);
 
         doCallRealMethod().when(this.ipClient).getIpInfo("2.101.153.203");
         doCallRealMethod().when(this.countryClient).getCountryInfo("ARG");
+        doCallRealMethod().when(this.currencyClient).getCurrencyInfo("ARS");
 
-        when(this.ipClient.get(anyString(), eq("2.101.153.203"), any()))
+        when(this.ipClient.get(any(), eq("2.101.153.203"), any()))
             .thenReturn(IpInformationResponse.builder().countryName("Argentina").countryCode3("ARG").build());
-
-        when(this.countryClient.get(anyString(), eq("ARG"), any()))
+        when(this.countryClient.get(any(), eq("ARG"), any()))
             .thenReturn(CountryInfoResponse.builder().currencies(currencies).build());
-
-        when(this.currencyClient.get(anyString(), eq("ARS"), any()))
+        when(this.currencyClient.get(any(), eq("ARS"), any()))
             .thenThrow(RestClientException.class);
+
         this.simpleIpService.getInformationUser("2.101.153.203");
     }
 
@@ -115,6 +112,7 @@ public class SimpleIpServiceTestIntegration extends AbstractTestNGSpringContextT
     }
 
     private void setUpMocks() {
+        MockitoAnnotations.initMocks(this);
         // Mock Response OK
         CountryInfoResponse.Currency currency = CountryInfoResponse.Currency.builder().code("COP").build();
         List<CountryInfoResponse.Currency> currencies = Lists.newArrayList(currency);
