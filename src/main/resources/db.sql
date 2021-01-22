@@ -3,14 +3,6 @@ DROP DATABASE IF EXISTS challenge;
 CREATE DATABASE challenge;
 USE challenge;
 
-DROP TABLE IF EXISTS `blacklist`;
-
-CREATE TABLE `blacklist` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `item` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS `ipitem`;
 
 CREATE TABLE `ipitem` (
